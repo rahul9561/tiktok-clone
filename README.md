@@ -34,4 +34,6 @@ This app features **Google authentication, vertical video feed, like/comment/sha
 git clone https://github.com/rahul9561/tiktok-clone.git
 cd tiktok-clone
 npm install
+# or
+yarn install
 npx expo start -c
