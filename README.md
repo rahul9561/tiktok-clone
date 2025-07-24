@@ -31,5 +31,7 @@ This app features **Google authentication, vertical video feed, like/comment/sha
 
 ### 1️⃣ **Clone the Repository**
 ```bash
-git clone https://github.com/your-username/tiktok-clone.git
+git clone https://github.com/rahul9561/tiktok-clone.git
 cd tiktok-clone
+npm install
+npx expo start -c
