@@ -1,9 +1,16 @@
-import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
 export default function TabsLayout() {
   return (
-    <Tabs
+    <Tabs 
+    
       screenOptions={({ route }) => ({
+         tabBarStyle: {
+          backgroundColor: 'black',
+        },
+        tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: 'gray',
+        headerShown: false,
         tabBarIcon: ({ color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap = "home";
           if (route.name === "index") iconName = "home";
@@ -13,8 +20,11 @@ export default function TabsLayout() {
           if (route.name === "profile") iconName = "person";
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "#000",
-        headerShown: false,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: 'bold',
+           marginVertical: 150, 
+        },
       })}
     >
       <Tabs.Screen name="index" options={{ title: "Home" }} />

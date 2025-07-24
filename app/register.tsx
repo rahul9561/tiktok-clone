@@ -1,6 +1,8 @@
 import { Link, useRouter } from "expo-router";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import React, { useState } from "react";
+
 import {
   StyleSheet,
   Text,
@@ -8,9 +10,9 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 
-export default function Login() {
+export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,30 +20,32 @@ export default function Login() {
 
   
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/(tabs)");
-    } catch (err: any) {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        email: user.email,
+        plan: 'free',
+        createdAt: serverTimestamp(),
+      });
+
+      router.push('/(tabs)');
+    } catch (err) {
       setError(err.message);
     }
   };
 
- const GoustSubmit = async () => {
-    try {
-      // Simulate guest login by navigating to the main screen
-      router.push("/(tabs)");
-    } catch (err: any) {
-      setError(err.message);
-    }
-  }
 
 
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        Welcome Back to <Text style={styles.highlight}>TIK TOK</Text>
+        Welcome  to <Text style={styles.highlight}>TIK TOK</Text>
       </Text>
       <Text style={styles.subtitle}>powered by Me</Text>
 
@@ -71,21 +75,17 @@ export default function Login() {
 
       {/* Login Button */}
       <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
-        <Text style={styles.loginText}>Login</Text>
+        <Text style={styles.loginText}>Signup</Text>
       </TouchableOpacity>
 
 
-    {/* Guest Button */}
-<TouchableOpacity style={styles.guestButton} onPress={GoustSubmit}>
-  <Text style={styles.guestText}>Guest User</Text>
-</TouchableOpacity>
 
 
   {/* Footer */}
       <Text style={styles.footer}>
-        Don’t have an account?{" "}
-        <Link href="/register" style={styles.link}>
-          Signup
+         have an account?{" "}
+        <Link href="/login" style={styles.link}>
+          Login
         </Link>
       </Text>
 
